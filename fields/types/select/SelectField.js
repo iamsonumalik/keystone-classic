@@ -38,24 +38,25 @@ module.exports = Field.create({
 	},
 
 	renderField () {
-		const { numeric, ops, path, value: val } = this.props;
-
+		const { numeric, ops, path, value: val, multi } = this.props;
 		// TODO: This should be natively handled by the Select component
 		const options = (numeric)
 			? ops.map(function (i) {
 				return { label: i.label, value: String(i.value) };
 			})
 			: ops;
-		const value = (typeof val === 'number')
-			? String(val)
+		var value = (typeof val === 'number')
+			? [String(val)]
 			: val;
-
+		const canMulti = multi && !numeric
+		value = canMulti ? value.split(',') : value
 		return (
 			<div>
 				{/* This input element fools Safari's autocorrect in certain situations that completely break react-select */}
 				<input type="text" style={{ position: 'absolute', width: 1, height: 1, zIndex: -1, opacity: 0 }} tabIndex="-1"/>
 				<Select
 					simpleValue
+					multi={canMulti}
 					name={this.getInputName(path)}
 					value={value}
 					options={options}

@@ -10,10 +10,11 @@ var utils = require('keystone-utils');
  */
 function select (list, path, options) {
 	this.ui = options.ui || 'select';
-	this.numeric = options.numeric ? true : false;
+	this.numeric = false;
+	this.multi = options.multi ? true : false;
 	this._nativeType = (options.numeric) ? Number : String;
 	this._underscoreMethods = ['format', 'pluck'];
-	this._properties = ['ops', 'numeric'];
+	this._properties = ['ops', 'numeric', 'multi'];
 	if (typeof options.options === 'string') {
 		options.options = options.options.split(',');
 	}
@@ -59,10 +60,10 @@ select.prototype.addToSchema = function (schema) {
 		label: this.options.labelPath || this.path + 'Label',
 		options: this.options.optionsPath || this.path + 'Options',
 		map: this.options.optionsMapPath || this.path + 'OptionsMap',
+		multi: this.options.multi || false
 	};
 	schema.path(this.path, _.defaults({
 		type: this._nativeType,
-		enum: this.values,
 		set: function (val) {
 			return (val === '' || val === null || val === false) ? undefined : val;
 		},
@@ -134,7 +135,7 @@ select.prototype.validateInput = function (data, callback) {
 	if (typeof value === 'string' && this.numeric) {
 		value = utils.number(value);
 	}
-	var result = value === undefined || value === null || value === '' || (value in this.map) ? true : false;
+	var result = value === undefined || value === null || value === ''|| value in this.map || value.every(v => Object.keys(this.map).includes(v)) ? true : false;
 	utils.defer(callback, result);
 };
 
