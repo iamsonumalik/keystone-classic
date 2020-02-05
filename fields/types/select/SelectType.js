@@ -12,7 +12,7 @@ function select (list, path, options) {
 	this.ui = options.ui || 'select';
 	this.numeric = false;
 	this.multi = options.multi ? true : false;
-	this._nativeType = (options.numeric) ? Number : String;
+	this._nativeType = (options.numeric) ? Number : options.multi ? [String] : String;
 	this._underscoreMethods = ['format', 'pluck'];
 	this._properties = ['ops', 'numeric', 'multi'];
 	if (typeof options.options === 'string') {

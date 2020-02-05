@@ -11,9 +11,7 @@ var SelectColumn = React.createClass({
 	},
 	getValue () {
 		const value = this.props.data.fields[this.props.col.path];
-		const option = this.props.col.field.ops.filter(i => i.value === value)[0];
-
-		return option ? option.label : null;
+		return this.props.col.field.ops.filter(_value => value.includes(_value.label)).map(_it => _it.label).toString();
 	},
 	render () {
 		const value = this.getValue();
