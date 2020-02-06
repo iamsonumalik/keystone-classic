@@ -49,7 +49,6 @@ module.exports = Field.create({
 			? [String(val)]
 			: val;
 		const canMulti = multi && !numeric
-		value = canMulti ? value.split(',') : value
 		return (
 			<div>
 				{/* This input element fools Safari's autocorrect in certain situations that completely break react-select */}

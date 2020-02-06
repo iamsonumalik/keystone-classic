@@ -153,7 +153,7 @@ select.prototype.validateRequiredInput = function (item, data, callback) {
 		if (value !== '') {
 			// This is already checkind in validateInput, but it doesn't hurt
 			// to check again for security
-			if (value in this.map) {
+			if (value in this.map || value.every(v => Object.keys(this.map).includes(v))) {
 				result = true;
 			}
 		}
