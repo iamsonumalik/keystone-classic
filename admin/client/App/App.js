@@ -29,7 +29,18 @@ const App = (props) => {
 	let children = props.children;
 	// If we're on either a list or an item view
 	let currentList, currentSection;
-	if (props.params.listId) {
+	const listItem = (Keystone.user.roles || []).find(item => item.name == props.params.listId);
+	if (listItem && !listItem.canRead && !listItem.canWrite) {
+		children = (
+			<Container>
+				<p>Yo do not have access!</p>
+				<Link to={`${Keystone.adminPath}`}>
+					Go back home
+				</Link>
+			</Container>
+		);
+	}
+	else if (props.params.listId) {
 		currentList = listsByPath[props.params.listId];
 		// If we're on a list path that doesn't exist (e.g. /keystone/gibberishasfw34afsd) this will
 		// be undefined

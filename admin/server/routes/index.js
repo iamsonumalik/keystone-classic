@@ -37,6 +37,7 @@ module.exports = function IndexRoute (req, res) {
 		signoutUrl: keystone.get('signout url'),
 		user: {
 			id: req.user.id,
+			roles: req.user.roles,
 			name: UserList.getDocumentName(req.user) || '(no name)',
 		},
 		userList: UserList.key,
