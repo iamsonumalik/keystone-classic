@@ -30,7 +30,7 @@ const App = (props) => {
 	// If we're on either a list or an item view
 	let currentList, currentSection;
 	const listItem = (Keystone.user.roles || []).find(item => item.name == props.params.listId);
-	if (listItem && !listItem.canRead && !listItem.canWrite) {
+	if (!listItem || (!listItem.canRead && !listItem.canWrite)) {
 		children = (
 			<Container>
 				<p>Yo do not have access!</p>
